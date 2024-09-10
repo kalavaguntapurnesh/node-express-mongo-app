@@ -1,0 +1,29 @@
+version: 2.1
+
+executors:
+  node-executor:
+    docker:
+      - image: circleci/node:14
+      - image: circleci/mongo:4.0
+    working_directory: ~/repo
+
+jobs:
+  test:
+    executor: node-executor
+    steps:
+      - checkout
+      - run:
+          name: Install Dependencies
+          command: npm install
+      - run:
+          name: Start MongoDB
+          command: sudo service mongod start
+      - run:
+          name: Run Tests
+          command: npm test
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test
