@@ -4,7 +4,6 @@ executors:
   node-executor:
     docker:
       - image: circleci/node:14
-      - image: circleci/mongo:4.0
     working_directory: ~/repo
 
 jobs:
@@ -12,12 +11,10 @@ jobs:
     executor: node-executor
     steps:
       - checkout
+      - setup_remote_docker
       - run:
           name: Install Dependencies
           command: npm install
-      - run:
-          name: Start MongoDB
-          command: sudo service mongod start
       - run:
           name: Run Tests
           command: npm test
